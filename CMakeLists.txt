@@ -12,8 +12,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(mpi-pi-lib
-	"include/area_integral.hpp"
-    "src/area_integral.cpp")
+    "include/common.hpp"
+	"include/random.hpp"
+	"include/pi.hpp"
+	"src/common.cpp"
+	"src/pi.cpp")
 
 target_include_directories(mpi-pi-lib PUBLIC
     ${Boost_INCLUDE_DIRS}
