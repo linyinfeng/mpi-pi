@@ -3,13 +3,16 @@
 #include "include/pi.hpp"
 #include <boost/mpi.hpp>
 #include <boost/program_options.hpp>
+#include <boost/multiprecision/cpp_dec_float.hpp>
 #include <iomanip>
 #include <iostream>
 #include <string>
 
 namespace mpi = boost::mpi;
 namespace po = boost::program_options;
+namespace mp = boost::multiprecision;
 
+using number = mp::number<mp::cpp_dec_float<100>>;
 constexpr int ROOT = 0;
 
 namespace mpi_pi {
@@ -50,29 +53,28 @@ int main(int argc, char **argv) {
     return 0; // all processes exit
   }
 
-  common::number result;
+  number result;
   if (config.method == "area_integral") {
-    result = area_integral::pi(world, ROOT, config.terms);
+    result = area_integral::pi<number>(world, ROOT, config.terms);
   } else if (config.method == "power_series") {
-    result = power_series::pi(world, ROOT, config.terms);
+    result = power_series::pi<number>(world, ROOT, config.terms);
   } else if (config.method == "improved_power_series") {
-    result = improved_power_series::pi(world, ROOT, config.terms);
+    result = improved_power_series::pi<number>(world, ROOT, config.terms);
   } else if (config.method == "monte_carlo") {
-    result = monte_carlo::pi(world, ROOT, config.terms);
+    result = monte_carlo::pi<number>(world, ROOT, config.terms);
   } else if (config.method == "monte_carlo_integral") {
-    result = monte_carlo_integral::pi(world, ROOT, config.terms);
+    result = monte_carlo_integral::pi<number>(world, ROOT, config.terms);
   } else if (config.method == "random_integral") {
-    result = random_integral::pi(world, ROOT, config.terms);
+    result = random_integral::pi<number>(world, ROOT, config.terms);
   } else if (config.method == "borwein1987") {
-    result = borwein1987::pi(world, ROOT, config.terms);
+    result = borwein1987::pi<number>(world, ROOT, config.terms);
   } else if (config.method == "yasumasa2002") {
-    result = yasumasa2002::pi(world, ROOT, config.terms);
+    result = yasumasa2002::pi<number>(world, ROOT, config.terms);
   } else {
     std::cout << "invalid method \"" << config.method << "\"" << std::endl;
   }
   if (world.rank() == ROOT) {
-    std::cout << std::setprecision(
-                     std::numeric_limits<common::number>::max_digits10)
+    std::cout << std::setprecision(std::numeric_limits<number>::max_digits10)
               << result << std::endl;
   }
 }

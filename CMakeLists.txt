@@ -15,8 +15,7 @@ add_library(mpi-pi-lib
     "include/common.hpp"
 	"include/random.hpp"
 	"include/pi.hpp"
-	"src/common.cpp"
-	"src/pi.cpp")
+	"src/common.cpp")
 
 target_include_directories(mpi-pi-lib PUBLIC
     ${Boost_INCLUDE_DIRS}
