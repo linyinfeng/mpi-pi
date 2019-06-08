@@ -243,7 +243,8 @@ Number pi(const boost::mpi::communicator &comm, int root, std::size_t terms) {
   Number x_multiplier = -pow(Number(640320), 3);
   Number sum = 13591409;
   for (std::size_t k = 0; k != terms; ++k) {
-    M = (pow(K, Number(3)) - Number(16) * K) * M / pow(k + Number(1), Number(3));
+    M = (pow(K, Number(3)) - Number(16) * K) * M /
+        pow(k + Number(1), Number(3));
     L += 545140134;
     X *= x_multiplier;
     sum += M * L / X;
@@ -254,6 +255,32 @@ Number pi(const boost::mpi::communicator &comm, int root, std::size_t terms) {
 }
 
 } // namespace chudnovsky
+
+namespace bbp {
+
+template <typename Number>
+Number pi(const boost::mpi::communicator &comm, int root, std::size_t terms) {
+  using boost::multiprecision::pow;
+  using std::pow;
+
+  common::Division division(comm, terms);
+  Number local_sum = 0;
+  for (std::size_t i = division.first; i != division.last; ++i) {
+    Number ni = Number(i);
+    Number ni8 = Number(8) * ni;
+    Number t1 = Number(4) / (ni8 + Number(1));
+    Number t2 = Number(-2) / (ni8 + Number(4));
+    Number t3 = Number(-1) / (ni8 + Number(5));
+    Number t4 = Number(-1) / (ni8 + Number(6));
+    Number term = (t1 + t2 + t3 + t4) / pow(Number(16), ni);
+    local_sum += term;
+  }
+  Number result = 0;
+  boost::mpi::reduce(comm, local_sum, result, std::plus<Number>(), root);
+  return result;
+}
+
+} // namespace bbp
 
 } // namespace mpi_pi
 

@@ -12,8 +12,7 @@ namespace mpi = boost::mpi;
 namespace po = boost::program_options;
 namespace mp = boost::multiprecision;
 
-//using number = mp::number<mp::cpp_dec_float<10000>>;
-using number = double;
+using number = mp::number<mp::cpp_dec_float<1000>>;
 constexpr int ROOT = 0;
 
 namespace mpi_pi {
@@ -73,6 +72,8 @@ int main(int argc, char **argv) {
     result = yasumasa2002::pi<number>(world, ROOT, config.terms);
   } else if (config.method == "chudnovsky") {
     result = chudnovsky::pi<number>(world, ROOT, config.terms);
+  } else if (config.method == "bbp") {
+    result = bbp::pi<number>(world, ROOT, config.terms);
   } else {
     std::cout << "invalid method \"" << config.method << "\"" << std::endl;
   }
