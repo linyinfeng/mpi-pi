@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.12)
 find_package(MPI REQUIRED)
 find_package(Boost COMPONENTS
     mpi
-    iostreams
     serialization
     program_options
     REQUIRED)
