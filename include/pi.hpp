@@ -70,12 +70,12 @@ Number pi(const boost::mpi::communicator &comm, int root, std::size_t terms) {
     Number ni = i;
     Number x = ni * Number(2) + Number(1);
     Number term5 = Number(4) / (x * pow(Number(5), x));
-    Number term239 = Number(1) / (x * pow(Number(239), x));
+    Number term239 = Number(-1) / (x * pow(Number(239), x));
     if (i % 2 == 1) {
       term5 = -term5;
       term239 = -term239;
     }
-    local_sum += term5 - term239;
+    local_sum += term5 + term239;
   }
   local_sum *= Number(4);
   Number result = 0;

@@ -12,7 +12,7 @@ namespace mpi = boost::mpi;
 namespace po = boost::program_options;
 namespace mp = boost::multiprecision;
 
-using number = mp::number<mp::cpp_dec_float<1000>>;
+using number = mp::number<mp::cpp_dec_float<10000>>;
 constexpr int ROOT = 0;
 
 namespace mpi_pi {
